@@ -6,6 +6,8 @@ import com.florian935.rediscache.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.collections4.IteratorUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class PostServiceImpl implements PostService {
 
     PostRepository postRepository;
+    static final String SINGLE_CACHE = "post-single";
     static final String ALL_CACHE = "post-all";
 
 
-    @Cacheable(value = ALL_CACHE)
     @Override
+    @Cacheable(value = ALL_CACHE)
     public List<Post> getAll() {
         System.out.println("=================> APPEL");
 
@@ -31,7 +34,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable(value = SINGLE_CACHE, key = "#id")
     public Post getById(Long id) {
+        System.out.println("=================> APPEL BY ID");
 
         return postRepository.findById(id).get();
     }
@@ -43,6 +48,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @CachePut(value = SINGLE_CACHE, key = "#post.id")
     public Post update(Post post) {
 
         return save(post);
@@ -55,6 +61,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @CacheEvict(value = SINGLE_CACHE, key = "#id")
     public void deleteById(Long id) {
 
         postRepository.deleteById(id);

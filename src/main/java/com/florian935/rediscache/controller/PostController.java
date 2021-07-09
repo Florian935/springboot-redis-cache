@@ -23,8 +23,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class PostController {
 
-    static final String ALL_CACHE = "post-all";
-    static final String SINGLE_CACHE = "post-single";
     PostService postService;
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -34,11 +32,9 @@ public class PostController {
         return postService.getAll();
     }
 
-    @Cacheable(value = SINGLE_CACHE, key = "#id")
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     Post getById(@PathVariable final Long id) {
-        System.out.println("=================> APPEL BY ID");
 
         return postService.getById(id);
     }
@@ -50,7 +46,6 @@ public class PostController {
         return postService.insert(post);
     }
 
-    @CachePut(value = SINGLE_CACHE, key = "#post.id")
     @PutMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(ACCEPTED)
     Post update(@RequestBody @Valid final Post post) {
@@ -58,7 +53,6 @@ public class PostController {
         return postService.update(post);
     }
 
-    @CacheEvict(value = SINGLE_CACHE, key = "#id")
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     void deleteById(@PathVariable final Long id) {
