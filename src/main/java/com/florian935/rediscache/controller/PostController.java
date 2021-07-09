@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -24,6 +26,14 @@ public class PostController {
     static final String ALL_CACHE = "post-all";
     static final String SINGLE_CACHE = "post-single";
     PostService postService;
+
+    @Cacheable(value = ALL_CACHE)
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    List<Post> getAll() {
+
+        return postService.getAll();
+    }
 
     @Cacheable(value = SINGLE_CACHE, key = "#id")
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
