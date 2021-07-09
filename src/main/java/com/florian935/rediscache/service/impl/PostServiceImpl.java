@@ -6,6 +6,7 @@ import com.florian935.rediscache.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.collections4.IteratorUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +19,13 @@ import static lombok.AccessLevel.PRIVATE;
 public class PostServiceImpl implements PostService {
 
     PostRepository postRepository;
+    static final String ALL_CACHE = "post-all";
 
+
+    @Cacheable(value = ALL_CACHE)
     @Override
     public List<Post> getAll() {
+        System.out.println("=================> APPEL");
 
         return IteratorUtils.toList(postRepository.findAll().iterator());
     }

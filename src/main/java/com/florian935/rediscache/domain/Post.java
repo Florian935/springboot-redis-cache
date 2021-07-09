@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import java.io.Serializable;
+
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -20,7 +22,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @NotNull
 @Entity(name = "posts")
-public class Post {
+public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

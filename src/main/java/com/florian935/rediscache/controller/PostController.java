@@ -27,7 +27,6 @@ public class PostController {
     static final String SINGLE_CACHE = "post-single";
     PostService postService;
 
-    @Cacheable(value = ALL_CACHE)
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     List<Post> getAll() {
@@ -39,6 +38,7 @@ public class PostController {
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     Post getById(@PathVariable final Long id) {
+        System.out.println("=================> APPEL BY ID");
 
         return postService.getById(id);
     }
