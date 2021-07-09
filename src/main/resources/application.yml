@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-redis-cache
+  batch:
+    initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  cache:
+    type: redis
