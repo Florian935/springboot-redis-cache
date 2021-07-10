@@ -18,3 +18,8 @@ spring:
       path: /h2-console
   cache:
     type: redis
+redis:
+  config:
+    hostname: localhost
+    port: 6379
+    databaseInstance: 7

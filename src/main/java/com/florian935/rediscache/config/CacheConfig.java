@@ -1,5 +1,8 @@
 package com.florian935.rediscache.config;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,18 +12,22 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Configuration
 @EnableCaching
+@RequiredArgsConstructor
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class CacheConfig {
-    private static final String LOCALHOST = "localhost";
-    private static final int PORT = 6379;
+
+    RedisProperties redisProperties;
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
 
         final RedisStandaloneConfiguration redisStandaloneConfiguration =
-                new RedisStandaloneConfiguration(LOCALHOST, PORT);
-        redisStandaloneConfiguration.setDatabase(7);
+                new RedisStandaloneConfiguration(redisProperties.getHostname(), redisProperties.getPort());
+        redisStandaloneConfiguration.setDatabase(redisProperties.getDatabaseInstance());
 
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
