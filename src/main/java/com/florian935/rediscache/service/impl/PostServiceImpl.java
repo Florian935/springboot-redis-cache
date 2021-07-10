@@ -31,7 +31,6 @@ public class PostServiceImpl implements PostService {
     @Override
     @Cacheable(value = ALL_CACHE, key = "'post-all'")
     public List<Post> getAll() {
-        System.out.println("=================> ALL");
 
         return IteratorUtils.toList(postRepository.findAll().iterator());
     }
