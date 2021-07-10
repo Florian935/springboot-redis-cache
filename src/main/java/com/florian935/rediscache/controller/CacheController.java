@@ -3,12 +3,16 @@ package com.florian935.rediscache.controller;
 import com.florian935.rediscache.service.CacheService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/v1.0/cache")
@@ -18,35 +22,31 @@ public class CacheController {
 
     CacheService cacheService;
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
     public Set<String> getAll() {
 
-        log.info("Get all cache");
-
-        return getCacheService().getAll();
+        return cacheService.getAll();
     }
 
-    @GetMapping("/{key}")
+    @GetMapping(value = "/{key}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
     public Object getByKey(@PathVariable final String key) {
 
-        log.info("Get cache by key {}", key);
-
-        return getCacheService().getByKey(key);
+        return cacheService.getByKey(key);
     }
 
     @DeleteMapping
+    @ResponseStatus(NO_CONTENT)
     public void evictAll() {
 
-        log.info("Delete all cache");
-
-        getCacheService().evictAll();
+        cacheService.evictAll();
     }
 
     @DeleteMapping("/{key}")
+    @ResponseStatus(NO_CONTENT)
     public void evictByKey(@PathVariable final String key) {
 
-        log.info("Delete cache by key {}", key);
-
-        getCacheService().evictByKey(key);
+        cacheService.evictByKey(key);
     }
 }
