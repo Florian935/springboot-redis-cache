@@ -4,15 +4,10 @@ import com.florian935.rediscache.domain.Post;
 import com.florian935.rediscache.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
-import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.*;
@@ -35,7 +30,7 @@ public class PostController {
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Optional<Post> getById(@PathVariable final Long id) {
+    Post getById(@PathVariable final Long id) {
 
         return postService.getById(id);
     }
@@ -48,7 +43,7 @@ public class PostController {
     }
 
     @PutMapping(produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(ACCEPTED)
+    @ResponseStatus(OK)
     Post update(@RequestBody @Valid final Post post) {
 
         return postService.update(post);
