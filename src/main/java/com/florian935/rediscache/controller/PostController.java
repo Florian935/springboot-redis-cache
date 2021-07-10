@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpStatus.*;
@@ -34,7 +35,7 @@ public class PostController {
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    Post getById(@PathVariable final Long id) {
+    Optional<Post> getById(@PathVariable final Long id) {
 
         return postService.getById(id);
     }

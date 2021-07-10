@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -28,20 +29,19 @@ public class PostServiceImpl implements PostService {
     @Override
     @Cacheable(value = ALL_CACHE)
     public List<Post> getAll() {
-        System.out.println("=================> APPEL");
 
         return IteratorUtils.toList(postRepository.findAll().iterator());
     }
 
     @Override
     @Cacheable(value = SINGLE_CACHE, key = "#id")
-    public Post getById(Long id) {
-        System.out.println("=================> APPEL BY ID");
+    public Optional<Post> getById(Long id) {
 
-        return postRepository.findById(id).get();
+        return postRepository.findById(id);
     }
 
     @Override
+    @CachePut(value = SINGLE_CACHE, key = "#post.id")
     public Post insert(Post post) {
 
         return save(post);
